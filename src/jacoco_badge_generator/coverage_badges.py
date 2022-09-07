@@ -253,7 +253,7 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
     don't exist, then it will exit with a non-zero exit code causing
     workflow to fail.
     """
-    for root, dirs, files in os.walk('.'):
+    for root, dirs, files in os.walk('/github/'):
         print(f"INFO: root: {root}")
         for the_directory in dirs:
             print(f"INFO: directory: {the_directory}")
