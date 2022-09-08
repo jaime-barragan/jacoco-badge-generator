@@ -33,6 +33,7 @@ import os
 import os.path
 import json
 from .text_length import calculateTextLength110
+from io import StringIO
 
 badgeTemplate = '<svg xmlns="http://www.w3.org/2000/svg" width="{6}" \
 height="20" role="img" aria-label="{3}: {0}">\
@@ -120,14 +121,24 @@ def computeCoverage(fileList) :
     missedBranches = 0
     coveredBranches = 0
     for filename in fileList :
-        with open(filename, newline='') as csvfile :
+        if filename in os.environ:
+            csvfile = StringIO(os.environ.get(filename))
             jacocoReader = csv.reader(csvfile)
-            for i, row in enumerate(jacocoReader) :
-                if i > 0 :
+            for i, row in enumerate(jacocoReader):
+                if i > 0:
                     missed += int(row[3])
                     covered += int(row[4])
                     missedBranches += int(row[5])
                     coveredBranches += int(row[6])
+        else:
+            with open(filename, newline='') as csvfile :
+                jacocoReader = csv.reader(csvfile)
+                for i, row in enumerate(jacocoReader) :
+                    if i > 0 :
+                        missed += int(row[3])
+                        covered += int(row[4])
+                        missedBranches += int(row[5])
+                        coveredBranches += int(row[6])
     return (calculatePercentage(covered, missed),
             calculatePercentage(coveredBranches, missedBranches))
 
@@ -253,7 +264,7 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
     don't exist, then it will exit with a non-zero exit code causing
     workflow to fail.
     """
-    for root, dirs, files in os.walk('/github/'):
+    for k in os.environ:
         print(f"INFO: root: {root}")
         for the_directory in dirs:
             print(f"INFO: directory: {the_directory}")
@@ -262,7 +273,7 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
 
     goodReports = []
     for f in jacocoFileList :
-        if os.path.exists(f) :
+        if os.path.exists(f) or f in os.environ:
             goodReports.append(f)
         else :
             print("WARNING: Report file", f, "does not exist.")
