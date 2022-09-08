@@ -550,6 +550,7 @@ def main(jacocoCsvFile,
     if len(filteredFileList) > 0 and (noReportsMissing or onMissingReport!="quiet") :  
 
         cov, branches = computeCoverage(filteredFileList)
+        print(f"INFO: coverage={cov}, branches={branches} ")
 
         if coverageIsFailing(cov, branches, minCoverage, minBranches) :
             print("Failing the workflow run.")
