@@ -264,13 +264,6 @@ def filterMissingReports(jacocoFileList, failIfMissing=False) :
     don't exist, then it will exit with a non-zero exit code causing
     workflow to fail.
     """
-    for k in os.environ:
-        print(f"INFO: root: {root}")
-        for the_directory in dirs:
-            print(f"INFO: directory: {the_directory}")
-        for the_file in files:
-            print(f"INFO: file: {the_file}")
-
     goodReports = []
     for f in jacocoFileList :
         if os.path.exists(f) or f in os.environ:
