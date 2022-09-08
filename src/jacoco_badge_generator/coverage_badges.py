@@ -122,8 +122,8 @@ def computeCoverage(fileList) :
     coveredBranches = 0
     for filename in fileList :
         if filename in os.environ:
-            print(f"INFO: ${filename} = {os.environ.get(filename)}")
-            csvfile = StringIO(os.environ.get(filename))
+            csvstr = os.linesep.join(os.environ.get(filename).split(' '))
+            csvfile = StringIO(csvstr)
             jacocoReader = csv.reader(csvfile)
             for i, row in enumerate(jacocoReader):
                 if i > 0:
