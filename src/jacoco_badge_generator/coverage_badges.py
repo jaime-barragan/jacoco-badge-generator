@@ -79,7 +79,7 @@ def generateBadge(covStr, color, badgeType="coverage") :
     rightCenter = 10 * leftWidth + rightWidth * 5 - 10
     # The +10 below is for an extra buffer on left end of badge
     leftCenter = 10 + leftWidth * 5
-    return badgeTemplate.format(
+    badge_str = badgeTemplate.format(
         covStr,          #0
         color,           #1
         textLength,      #2
@@ -91,6 +91,8 @@ def generateBadge(covStr, color, badgeType="coverage") :
         leftWidth,       #8
         leftCenter       #9
         )
+    print("::set-output name=badge::" + badge_str)
+    return badge_str
 
 def generateDictionaryForEndpoint(covStr, color, badgeType) :
     """Generated a Python dictionary containing all of the required
