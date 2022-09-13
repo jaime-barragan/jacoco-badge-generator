@@ -91,7 +91,7 @@ def generateBadge(covStr, color, badgeType="coverage") :
         leftWidth,       #8
         leftCenter       #9
         )
-    print("::set-output name=badge::" + badge_str)
+    print(f"::set-output name=badge-{badgeType}::" + badge_str)
     return badge_str
 
 def generateDictionaryForEndpoint(covStr, color, badgeType) :
